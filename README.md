@@ -11,7 +11,8 @@
 > pip install -r requirements.txt
 
 > install xampp
-# requirements
+
+# to start
 
 > open project folder with ide
 
