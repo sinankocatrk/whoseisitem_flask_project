@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block title %} <title>
+    giriş ekranı
+</title>
+{% endblock %}
+
+{% block yazi %}
+{% from "includes/formhelpers.html" import render_field %}
+<br><br>
+    <p>Giriş Yap</p>
+    <hr>
+    <form method=post>
+        <dl>
+
+          {{ render_field(form.username) }}
+          {{ render_field(form.password)}}
+        </dl>
+        <button type="submit" class="btn btn-primary">Giriş</button>
+      </form>
+{% endblock  %}

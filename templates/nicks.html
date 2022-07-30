@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %} <title>
+    Nick Arama Paneli
+</title>
+{% endblock %}
+
+{% block yazi %}
+<br><br>
+    <p>Hoşgeldiniz {{session["username"]}} </p>
+    <hr>
+
+    {% if nicks %}
+        <ul class="list-group">
+        {% for i in nicks  %}
+        <hr>
+        
+
+        <li class="list-group-item">{{i.title}}</li>
+        <li class = "list-group-item"><a href="nick/{{i.id}}">{{i.content}}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+        <div class="alert alert-danger">Nick Bulunamadı</div>
+    {% endif %}
+
+{% endblock  %}

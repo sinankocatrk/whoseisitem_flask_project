@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}<title>
+nick düzenleme
+</title>
+{% endblock title %}
+
+{% block yazi %}
+
+{% if nick %}
+
+<h4>{{nick.title}}</h4>
+<hr>
+Yazar : {{nick.author}}
+<hr>
+Tarih : {{nick.created_date}}
+<hr>
+{{nick.content|safe}}
+{% else %}
+
+<div class = "alert alert-warning">
+    Böyle bir makale bulunmuyor...
+</div>
+{% endif %}
+
+
+{% endblock yazi %}
+
+
+
+

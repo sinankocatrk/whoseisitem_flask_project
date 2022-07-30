@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %} <title>
+    Nick Oluştur
+</title>
+{% endblock %}
+
+{% block yazi %}
+{% from "includes/formhelpers.html" import render_field %}
+<br><br>
+    <p>Nick Oluştur</p>
+    <hr>
+    <form method=post>
+        <dl>
+
+          {{ render_field(form.server,class= "form-control") }}
+          {{ render_field(form.nick,class= "form-control")}}
+        </dl>
+        <button type="submit" class="btn btn-danger">Nick Ekle</button>
+      </form>
+
+{% endblock  %}
