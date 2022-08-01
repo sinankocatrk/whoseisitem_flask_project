@@ -11,7 +11,13 @@
     <hr>
 
     {% if nicks %}
-        <ul class="list-group">
+    <form action="/search" method = "post">
+        <input type="text" name = "keyword" class="input-sm" maxlength="64" placeholder="Ara...">
+    <button type="submit" class="btn btn-danger">Ara</button>
+    </form>
+    <hr>
+    
+    <ul class="list-group">
         {% for i in nicks  %}
         <hr>
         
@@ -19,7 +25,9 @@
         <li class="list-group-item">{{i.title}}</li>
         <li class = "list-group-item"><a href="nick/{{i.id}}">{{i.content}}</a></li>
         {% endfor %}
-      </ul>
+      </ul> 
+    
+
     {% else %}
         <div class="alert alert-danger">Nick Bulunamadı</div>
     {% endif %}

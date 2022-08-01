@@ -174,7 +174,7 @@ def nicks():
 
     cursor = mysql.connection.cursor()
 
-    sorgu= "Select * From nicks"
+    sorgu = "Select * From nicks"
 
     result = cursor.execute(sorgu)
 
@@ -201,13 +201,91 @@ def nick(id):
     else:
         return render_template("nick.html")
 
+#nick silme
+@app.route("/delete/<string:id>")
+@login_required
+def delete(id):
+    cursor = mysql.connection.cursor()
+    sorgu = "Select * from nicks where author = %s and id = %s"
+    result= cursor.execute(sorgu,(session["username"],id))
+    
+    if result >0:
+        sorgu2 = "Delete from nicks where id = %s"
+        cursor.execute(sorgu2,(id,))
+        mysql.connection.commit()
+        return redirect(url_for("dashboard"))
+    else:
+        flash("böyle bir makale yok veya bu işleme yetkiniz yok","danger")
+        return redirect(url_for("index"))
+        
+#nick editleme
+@app.route("/edit/<string:id>",methods = ["GET","POST"])
+@login_required
+def edit(id):
+   if request.method == "GET":
+       cursor = mysql.connection.cursor()
 
+       sorgu = "Select * from nicks where id = %s and author = %s"
+       result = cursor.execute(sorgu,(id,session["username"]))
+
+       if result == 0:
+           flash("Böyle bir makale yok veya bu işleme yetkiniz yok","danger")
+           return redirect(url_for("index"))
+       else:
+           veri = cursor.fetchone()
+           form = NickForm()
+
+           form.server.data = veri["title"]
+           form.nick.data = veri["content"]
+           return render_template("edit.html",form = form)
+
+   else:
+    
+      # POST REQUEST
+       form = NickForm(request.form)
+
+       newNick = form.server.data
+       newServer = form.nick.data
+
+       sorgu2 = "Update nicks Set title = %s,content = %s where id = %s "
+
+       cursor = mysql.connection.cursor()
+
+       cursor.execute(sorgu2,(newNick,newServer,id))
+
+       mysql.connection.commit()
+
+       flash("Nick başarıyla güncellendi","success")
+
+       return redirect(url_for("dashboard"))
+# Arama URL
+@app.route("/search",methods = ["GET","POST"])
+def search():
+   if request.method == "GET":
+       return redirect(url_for("index"))
+   else:
+       keyword = request.form.get("keyword")
+
+       cursor = mysql.connection.cursor()
+
+       sorgu = "Select * from nicks where content like '%" + keyword +"%'"
+
+       result = cursor.execute(sorgu)
+
+       if result == 0:
+           flash("Aranan kelimeye uygun nick bulunamadı...","warning")
+           return redirect(url_for("nicks"))
+       else:
+           nicks = cursor.fetchall()
+
+           return render_template("nicks.html",nicks = nicks)
 
 
 @app.route("/users/<string:id>")
 
 def users(id):
     return "Users İd:" + id
+
 
 
 if __name__ == "__main__":
